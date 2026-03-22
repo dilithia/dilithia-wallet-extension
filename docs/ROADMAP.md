@@ -47,7 +47,7 @@ The roadmap intentionally prioritizes protocol stability and security UX before 
 
 - browser-safe `dilithia-core` WASM backend (`wasm32-unknown-unknown`)
 - end-to-end real signing from popup and provider
-- deterministic HD wallet derivation aligned with `qsc-rs`
+- deterministic HD wallet derivation aligned with `dilithia-node`
 - shielded pool operations (deposit, withdraw, compliance proofs)
 - address handling for raw and checksummed forms
 
@@ -68,7 +68,7 @@ The roadmap intentionally prioritizes protocol stability and security UX before 
 
 ## Phase 6: Full Node Coverage — Planned
 
-Features from `qsc-rs` not yet exposed in the wallet:
+Features from `dilithia-node` not yet exposed in the wallet:
 
 - staking / unstaking / claim rewards (via staking contract)
 - governance proposals and voting (via governance contract)

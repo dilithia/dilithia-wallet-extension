@@ -111,4 +111,4 @@ const tx = await window.dilithia.request({
 - `docs/DEVELOPMENT.md` — Local workflow, testing
 - `docs/ROADMAP.md` — Phases and priorities
 - `docs/QSC_WALLET_PROTOCOL.md` — Mnemonic and HD wallet protocol
-- `docs/HD_WALLET_ALIGNMENT.md` — Compatibility with qsc-rs
+- `docs/HD_WALLET_ALIGNMENT.md` — Compatibility with dilithia-node

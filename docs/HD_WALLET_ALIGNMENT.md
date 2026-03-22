@@ -1,8 +1,8 @@
-# HD Wallet Alignment With qsc-rs
+# HD Wallet Alignment With dilithia-node
 
 ## Why this matters
 
-`qsc-rs` has moved the wallet model forward. The canonical path is now:
+`dilithia-node` has moved the wallet model forward. The canonical path is now:
 
 1. generate or import a 24-word mnemonic
 2. derive a deterministic 32-byte seed with `seed_from_mnemonic()`
@@ -13,7 +13,7 @@ This makes the mnemonic a real recovery primitive instead of a cosmetic backup p
 
 ## Current status in the extension
 
-`crypto-wasm` now wraps `dilithia-core` directly and follows the same mnemonic-first HD flow as `qsc-rs`.
+`crypto-wasm` now wraps `dilithia-core` directly and follows the same mnemonic-first HD flow as `dilithia-node`.
 
 ## Required migration
 
@@ -37,7 +37,7 @@ The node surface now implies support for:
 - `128` raw hex
 - `136` checksummed hex (`128 + 8`)
 
-The raw length depends on the active hash algorithm in `qsc-rs`.
+The raw length depends on the active hash algorithm in `dilithia-node`.
 
 ## Consequences for the provider
 
@@ -54,7 +54,7 @@ But the wallet internals must change so that:
 
 - mnemonic recovery is deterministic and protocol-faithful
 - address validation accepts raw and checksummed forms
-- sign/recover flows match `qsc-rs`
+- sign/recover flows match `dilithia-node`
 
 ## Consequences for DiliScan and dapps
 

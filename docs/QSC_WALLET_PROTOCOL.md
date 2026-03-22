@@ -1,6 +1,6 @@
 # QSC Wallet Protocol Notes
 
-This document captures the current wallet and mnemonic behavior found in `qsc-rs` so the Chrome extension stays protocol-compatible.
+This document captures the current wallet and mnemonic behavior found in `dilithia-node` so the Chrome extension stays protocol-compatible.
 
 ## Source of Truth
 
@@ -28,7 +28,7 @@ What differs from standard BIP-39 implementations:
 - Wallet encryption keys are derived with `blake3::derive_key`, not PBKDF2
 - The mnemonic feeds the QSC deterministic HD wallet flow, not standard BIP-32/BIP-44 derivation
 
-## Canonical Wallet Flow In `qsc-rs`
+## Canonical Wallet Flow In `dilithia-node`
 
 The canonical flow is now `create_hd_wallet_account()` / `recover_hd_account()` / `recover_hd_wallet_account()` from `dilithia-core`.
 
@@ -53,9 +53,9 @@ Behavior:
 
 This is the flow the extension should mirror for signing compatibility.
 
-## Deterministic HD Flow In `qsc-rs`
+## Deterministic HD Flow In `dilithia-node`
 
-`qsc-rs` exposes:
+`dilithia-node` exposes:
 
 - `seed_from_mnemonic()`
 - `keygen_mldsa65_from_seed()`
@@ -81,6 +81,6 @@ The extension uses the canonical wallet mode:
 - deterministic ML-DSA-65 keypair derived from mnemonic
 - 24-word mnemonic backup
 - encrypted local storage for secret key via BLAKE3-CTR keystream
-- signing-compatible with `qsc-rs`
+- signing-compatible with `dilithia-node`
 - HD account derivation via indexed `create_hd_wallet_account` / `recover_hd_account`
 - wallet file structure compatible with `WalletFile` from `dilithia-core`
