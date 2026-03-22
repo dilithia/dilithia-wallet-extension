@@ -1,0 +1,71 @@
+export const STORAGE_KEYS = {
+  wallet: "dilithia.wallet",
+  walletRecovery: "dilithia.walletRecovery",
+  settings: "dilithia.settings",
+  connections: "dilithia.connections",
+  customChains: "dilithia.customChains",
+  shieldedState: "dilithia.shieldedState",
+  lockConfig: "dilithia.lockConfig",
+};
+
+export const DEFAULT_SETTINGS = {
+  networkRegistryUrl: "",
+  networkId: "dili-devnet",
+  rpcUrl: "http://127.0.0.1:8000/rpc",
+  rpcUrlSource: "registry",
+  chainId: "dili-devnet-local",
+  chainIdSource: "registry",
+  locale: "en"
+};
+
+export const PROVIDER_METHODS = {
+  CONNECT: "dilithia_connect",
+  REQUEST_PERMISSIONS: "dilithia_requestPermissions",
+  GET_PERMISSIONS: "dilithia_permissions",
+  ACCOUNTS: "dilithia_accounts",
+  CHAIN_ID: "dilithia_chainId",
+  SWITCH_CHAIN: "dilithia_switchChain",
+  ADD_CHAIN: "dilithia_addChain",
+  GET_NONCE: "dilithia_getNonce",
+  GET_BALANCE: "dilithia_getBalance",
+  GET_NETWORK_INFO: "dilithia_getNetworkInfo",
+  GET_PUBLIC_KEY: "dilithia_getPublicKey",
+  SIGN_MESSAGE: "dilithia_signMessage",
+  SIGN_PAYLOAD: "dilithia_signPayload",
+  BUILD_OWNERSHIP_PROOF: "dilithia_buildOwnershipProof",
+  SEND_TRANSACTION: "dilithia_sendTransaction",
+  SIMULATE_CALL: "dilithia_simulateCall",
+  ESTIMATE_GAS: "dilithia_estimateGas",
+  GET_RECEIPT: "dilithia_getReceipt",
+  CALL_CONTRACT: "dilithia_callContract",
+  QUERY_CONTRACT: "dilithia_queryContract",
+  GET_TRANSACTION_HISTORY: "dilithia_getTransactionHistory",
+  SHIELDED_DEPOSIT: "dilithia_shieldedDeposit",
+  SHIELDED_WITHDRAW: "dilithia_shieldedWithdraw",
+  SHIELDED_BALANCE: "dilithia_shieldedBalance",
+  SHIELDED_COMPLIANCE_PROOF: "dilithia_shieldedComplianceProof",
+  DISCONNECT: "dilithia_disconnect"
+};
+
+export const DEFAULT_ORIGIN_PERMISSIONS = [
+  PROVIDER_METHODS.ACCOUNTS,
+  PROVIDER_METHODS.CHAIN_ID,
+  PROVIDER_METHODS.GET_BALANCE,
+  PROVIDER_METHODS.GET_NETWORK_INFO,
+  PROVIDER_METHODS.GET_NONCE,
+  PROVIDER_METHODS.GET_PUBLIC_KEY,
+  PROVIDER_METHODS.SIGN_MESSAGE,
+  PROVIDER_METHODS.SIGN_PAYLOAD,
+  PROVIDER_METHODS.BUILD_OWNERSHIP_PROOF,
+  PROVIDER_METHODS.SEND_TRANSACTION,
+  PROVIDER_METHODS.SIMULATE_CALL,
+  PROVIDER_METHODS.ESTIMATE_GAS,
+  PROVIDER_METHODS.GET_RECEIPT,
+  PROVIDER_METHODS.CALL_CONTRACT,
+  PROVIDER_METHODS.QUERY_CONTRACT,
+  PROVIDER_METHODS.GET_TRANSACTION_HISTORY,
+  PROVIDER_METHODS.SHIELDED_DEPOSIT,
+  PROVIDER_METHODS.SHIELDED_WITHDRAW,
+  PROVIDER_METHODS.SHIELDED_BALANCE,
+  PROVIDER_METHODS.SHIELDED_COMPLIANCE_PROOF,
+];

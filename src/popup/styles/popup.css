@@ -1,0 +1,576 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1f1f1c;
+  --color-muted: #6e6a63;
+  --color-accent: #ff8c00;
+  --color-accent-hover: #e67300;
+  --color-border: #e5e3df;
+  --color-error: #c23616;
+  --color-success: #27ae60;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: "SF Pro Text", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "SF Mono", "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html, body {
+  width: 380px;
+  height: 600px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#app {
+  width: 380px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+.screen-centered {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.screen-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  min-height: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.header-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.header-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--color-muted);
+}
+
+.header-spacer {
+  width: 40px;
+}
+
+/* ── Tab bar ─────────────────────────────────────────────────────── */
+
+.tab-bar {
+  display: flex;
+  border-top: 1px solid var(--color-border);
+  height: 56px;
+  flex-shrink: 0;
+  background: var(--color-bg);
+}
+
+.tab-bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+
+.tab-bar-item.active {
+  color: var(--color-accent);
+}
+
+.tab-bar-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.tab-bar-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  text-align: center;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+.btn-subtle {
+  background: none;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-subtle:hover:not(:disabled) {
+  background: #f5f4f2;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+  padding: 4px 0;
+}
+
+/* ── Inputs ──────────────────────────────────────────────────────── */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color 0.15s;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.input:focus {
+  border-color: var(--color-accent);
+}
+
+.input-center {
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ── Cards ───────────────────────────────────────────────────────── */
+
+.card {
+  background: #fafaf8;
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.card-value {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ── Typography ──────────────────────────────────────────────────── */
+
+.text-hero {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.text-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.text-body {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.text-error {
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  word-break: break-all;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ── Utilities ───────────────────────────────────────────────────── */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack-sm { gap: 8px; }
+.stack-md { gap: 16px; }
+.stack-lg { gap: 24px; }
+.stack-xl { gap: 32px; }
+
+.grow { flex: 1; }
+.w-full { width: 100%; }
+.max-w-buttons { max-width: 260px; }
+
+.mt-auto { margin-top: auto; }
+.mb-auto { margin-bottom: auto; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.pt-lg { padding-top: 24px; }
+
+/* ── Balance display ─────────────────────────────────────────────── */
+
+.balance-amount {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.balance-symbol {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+/* ── Quick actions ───────────────────────────────────────────────── */
+
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+}
+
+.quick-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f5f0eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Lock screen ─────────────────────────────────────────────────── */
+
+.lock-icon {
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+/* ── List ─────────────────────────────────────────────────────────── */
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+/* ── Account switcher (header pill) ──────────────────────────────── */
+
+.account-pill {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.account-pill:hover {
+  border-color: var(--color-accent);
+}
+
+/* ── Mini icon buttons (inline copy/explorer) ────────────────────── */
+
+.mini-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.mini-icon-btn:hover {
+  color: var(--color-accent);
+  background: #f5f0eb;
+}
+
+/* ── Dialog (Apple-style modal) ──────────────────────────────────── */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: dialog-fade-in 0.15s ease-out;
+}
+
+.dialog-card {
+  background: var(--color-bg);
+  border-radius: 14px;
+  padding: 24px;
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  animation: dialog-scale-in 0.2s ease-out;
+}
+
+.dialog-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.btn-danger {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--color-error);
+  color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+@keyframes dialog-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ── Settings list (Apple grouped style) ─────────────────────────── */
+
+.settings-group {
+  background: none;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.settings-group-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding: 0 4px 6px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--color-text);
+}
+
+.settings-row:active {
+  opacity: 0.7;
+}
+
+.settings-row-label {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.settings-row-value {
+  font-size: 14px;
+  color: var(--color-muted);
+  max-width: 160px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-row-chevron {
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+/* ── Approval sheet (bottom overlay) ─────────────────────────────── */
+
+.approval-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  background: var(--color-bg);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+  max-height: 80%;
+  overflow-y: auto;
+  animation: sheet-slide-up 0.25s ease-out;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes sheet-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

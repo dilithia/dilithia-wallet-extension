@@ -1,0 +1,70 @@
+site_name: Dilithia Wallet Extension
+site_description: Non-custodial browser wallet for the Dilithia blockchain with post-quantum signing (ML-DSA-65)
+repo_url: https://github.com/dilithia/dilithia-wallet-extension
+repo_name: dilithia/dilithia-wallet-extension
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: orange
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: orange
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Provider API:
+    - Specification: provider/spec.md
+    - Permissions: provider/permissions.md
+    - Events: provider/events.md
+  - Screens:
+    - Home: screens/home.md
+    - Send & Receive: screens/send-receive.md
+    - Privacy: screens/privacy.md
+    - Swap: screens/swap.md
+    - Settings: screens/settings.md
+    - Accounts: screens/accounts.md
+  - Guides:
+    - Lock & Security: guides/lock-security.md
+    - HD Wallet: guides/hd-wallet.md
+    - Browser Compatibility: guides/browser-compat.md
+  - Reference:
+    - WASM Crypto Backend: reference/crypto-wasm.md
+    - Protocol Notes: reference/protocol.md

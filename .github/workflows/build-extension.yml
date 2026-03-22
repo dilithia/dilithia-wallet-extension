@@ -1,0 +1,98 @@
+name: Build Extension
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Build WASM crypto backend
+        run: cd crypto-wasm && wasm-pack build --target web --out-dir pkg
+
+      - name: Install popup dependencies
+        run: npm ci
+
+      - name: Build popup (Vite)
+        run: npm run build
+
+      - name: Prepare Chrome extension
+        run: |
+          mkdir -p artifacts/chrome
+          # Copy extension files (exclude dev/build artifacts)
+          cp manifest.json artifacts/chrome/
+          cp -r src/ artifacts/chrome/src/
+          cp -r dist/ artifacts/chrome/dist/
+          cp -r crypto-wasm/pkg/ artifacts/chrome/crypto-wasm/pkg/
+          # Remove source files not needed at runtime
+          rm -rf artifacts/chrome/src/popup/screens/
+          rm -rf artifacts/chrome/src/popup/components/
+          rm -rf artifacts/chrome/src/popup/hooks/
+          rm -rf artifacts/chrome/src/popup/lib/
+          rm -rf artifacts/chrome/src/popup/main.jsx
+          rm -rf artifacts/chrome/src/popup/index.html
+          rm -rf artifacts/chrome/src/popup/styles/
+          cd artifacts/chrome && zip -r ../dilithia-wallet-chrome.zip . -x "*.map"
+
+      - name: Prepare Firefox extension
+        run: |
+          mkdir -p artifacts/firefox
+          cp -r artifacts/chrome/* artifacts/firefox/
+          # Patch manifest for Firefox
+          node -e "
+            const m = require('./artifacts/firefox/manifest.json');
+            m.browser_specific_settings = {
+              gecko: {
+                id: 'wallet@dilithia.org',
+                strict_min_version: '109.0'
+              }
+            };
+            delete m.minimum_chrome_version;
+            require('fs').writeFileSync('./artifacts/firefox/manifest.json', JSON.stringify(m, null, 2));
+          "
+          cd artifacts/firefox && zip -r ../dilithia-wallet-firefox.zip . -x "*.map"
+
+      - name: Upload Chrome artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dilithia-wallet-chrome
+          path: artifacts/dilithia-wallet-chrome.zip
+
+      - name: Upload Firefox artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dilithia-wallet-firefox
+          path: artifacts/dilithia-wallet-firefox.zip
+
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/dilithia-wallet-chrome.zip
+            artifacts/dilithia-wallet-firefox.zip
+          generate_release_notes: true

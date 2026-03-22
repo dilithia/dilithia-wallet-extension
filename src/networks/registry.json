@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "updated_at": "2026-03-12T00:00:00Z",
+  "networks": [
+    {
+      "id": "dili-mainnet",
+      "label": "Dilithia Mainnet",
+      "chain_id": "dili-mainnet-alpha",
+      "rpc_endpoints": [
+        "https://rpc-mainnet.dilithia.example/rpc"
+      ],
+      "bootstrap_peers": [
+        "203.0.113.10:9100",
+        "203.0.113.11:9100"
+      ],
+      "explorer_url": "https://diliscan.dilithia.example"
+    },
+    {
+      "id": "dili-sepolia",
+      "label": "Dilithia Sepolia",
+      "chain_id": "dili-sepolia-alpha",
+      "rpc_endpoints": [
+        "https://rpc-sepolia.dilithia.example/rpc"
+      ],
+      "bootstrap_peers": [
+        "198.51.100.20:9100",
+        "198.51.100.21:9100"
+      ],
+      "explorer_url": "https://sepolia.diliscan.dilithia.example"
+    },
+    {
+      "id": "dili-devnet",
+      "label": "Dilithia Devnet",
+      "chain_id": "dili-devnet-local",
+      "rpc_endpoints": [
+        "http://127.0.0.1:8000/rpc"
+      ],
+      "bootstrap_peers": [
+        "127.0.0.1:9100"
+      ],
+      "explorer_url": "http://127.0.0.1:8011"
+    }
+  ]
+}

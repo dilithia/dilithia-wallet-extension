@@ -1,0 +1,141 @@
+:root {
+  color: #2a2623;
+  background: linear-gradient(180deg, #f7efe1 0%, #f3e7d3 100%);
+  font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.panel {
+  border: 1px solid rgba(42, 38, 35, 0.1);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8f3f1d;
+}
+
+h1 {
+  margin: 0 0 8px;
+}
+
+.muted {
+  color: rgba(42, 38, 35, 0.72);
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8f3f1d;
+}
+
+input {
+  border: 1px solid rgba(42, 38, 35, 0.1);
+  border-radius: 14px;
+  background: #f3e7d3;
+  color: #2a2623;
+  padding: 12px 14px;
+}
+
+select {
+  border: 1px solid rgba(42, 38, 35, 0.1);
+  border-radius: 14px;
+  background: #f3e7d3;
+  color: #2a2623;
+  padding: 12px 14px;
+}
+
+.button {
+  width: fit-content;
+  border: 1px solid rgba(143, 63, 29, 0.18);
+  border-radius: 999px;
+  background: #ffffff;
+  color: #8f3f1d;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  padding: 10px 14px;
+  text-transform: uppercase;
+}
+
+.button.primary {
+  background: #8f3f1d;
+  color: #f3e7d3;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+textarea {
+  border: 1px solid rgba(42, 38, 35, 0.1);
+  border-radius: 14px;
+  background: #f3e7d3;
+  color: #2a2623;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.connections-list {
+  display: grid;
+  gap: 12px;
+}
+
+.connection-card {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(42, 38, 35, 0.1);
+  border-radius: 16px;
+  background: #f7efe1;
+  padding: 12px;
+}
+
+.permissions-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.permission-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.6);
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dilithia Wallet Options</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="panel">
+        <p id="configuration-eyebrow" class="eyebrow">Configuration</p>
+        <h1 id="options-title">Dilithia Wallet Options</h1>
+        <p id="options-intro" class="muted"></p>
+      </section>
+
+      <form id="settings-form" class="panel form">
+        <label class="field">
+          <span id="network-registry-url-label">Network Registry URL</span>
+          <input id="network-registry-url" type="text" />
+        </label>
+        <div class="actions">
+          <button id="refresh-registry" class="button" type="button">Refresh Registry</button>
+        </div>
+        <div id="registry-status" class="muted"></div>
+        <label class="field">
+          <span id="network-label">Network</span>
+          <select id="network-id"></select>
+        </label>
+        <label class="field">
+          <span id="rpc-url-label">RPC URL</span>
+          <input id="rpc-url" type="text" />
+        </label>
+        <label class="field">
+          <span id="chain-id-label">Chain ID</span>
+          <input id="chain-id" type="text" />
+        </label>
+        <label class="field">
+          <span id="language-label">Language</span>
+          <select id="locale">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="pt">Portuguese</option>
+          </select>
+        </label>
+        <label class="field">
+          <span id="bootstrap-peers-label">Bootstrap Peers</span>
+          <textarea id="bootstrap-peers" rows="5" readonly></textarea>
+        </label>
+        <button class="button primary" type="submit">Save Settings</button>
+      </form>
+
+      <section class="panel">
+        <p id="install-eyebrow" class="eyebrow">Install</p>
+        <p id="install-hint" class="muted"></p>
+      </section>
+
+      <section class="panel">
+        <p id="connected-sites-eyebrow" class="eyebrow">Connected Sites</p>
+        <div id="connected-sites-list" class="connections-list"></div>
+      </section>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+  </html>

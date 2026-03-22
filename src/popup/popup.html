@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; script-src 'self' 'wasm-unsafe-eval'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dilithia Wallet</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app" id="app-shell" data-view="home">
+      <section id="lock-screen" class="lock-screen" hidden>
+        <div class="lock-screen-content">
+          <svg class="lock-icon" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="12" cy="16.5" r="1.5" fill="currentColor"/>
+          </svg>
+          <h2 class="lock-title">Dilithia Wallet</h2>
+          <label class="field">
+            <input id="lock-password-input" type="password" placeholder="Enter password" autocomplete="off" />
+          </label>
+          <button id="lock-unlock-button" class="button primary button-block" type="button">Unlock</button>
+          <div id="lock-error" class="lock-error muted" hidden></div>
+          <button id="lock-forgot-button" class="button-link" type="button">Forgot password? Reset with recovery phrase</button>
+        </div>
+      </section>
+
+      <div id="error-banner" class="error-banner" hidden>
+        <div id="error-banner-summary" class="error-summary-text"></div>
+        <details class="error-details">
+          <summary class="error-details-summary">Technical details</summary>
+          <div id="error-banner-detail" class="error-detail-text"></div>
+        </details>
+      </div>
+
+      <header class="topbar">
+        <button id="header-back" class="icon-button" type="button" aria-label="Back" title="Back" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M15 18l-6-6 6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+            />
+          </svg>
+        </button>
+        <div id="account-switcher-wrap" class="account-switcher-wrap">
+          <button id="open-accounts" class="account-switcher-button" type="button" aria-label="Manage accounts">
+            <span id="account-switcher-label" class="account-switcher-label">Account 1</span>
+            <svg class="account-switcher-caret" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4 6.5 8 10l4-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" />
+            </svg>
+          </button>
+        </div>
+        <div id="accounts-header-title" class="page-header-title" hidden>Accounts</div>
+        <div id="settings-header-title" class="page-header-title" hidden>Settings</div>
+        <div id="networks-header-title" class="page-header-title" hidden>Networks</div>
+        <div id="import-header-title" class="page-header-title" hidden>Import</div>
+        <div id="recovery-header-title" class="page-header-title" hidden>Back up your wallet</div>
+        <div id="send-header-title" class="page-header-title" hidden>Send</div>
+        <div id="receive-header-title" class="page-header-title" hidden>Receive</div>
+        <div id="shielded-header-title" class="page-header-title" hidden>Shielded</div>
+        <button id="open-settings" class="icon-button" aria-label="Open settings" title="Settings">
+          <svg viewBox="0 0 256 256" aria-hidden="true">
+            <path
+              d="M120.502 243.45c-7.057 0-12.089-3.771-14.169-10.614-1.694-5.572-3.675-11.136-5.488-16.045a391 391 0 0 0-13.972-6.186c-4.677 2.092-9.771 4.521-15.837 7.556-2.135 1.067-4.202 1.588-6.317 1.588-3.589 0-6.82-1.467-9.604-4.36a564 564 0 0 0-14.287-14.297c-4.448-4.31-5.426-9.978-2.688-15.554 1.102-2.242 2.145-4.495 3.249-6.881 1.337-2.888 2.713-5.86 4.208-8.822-2.522-5.034-4.6-9.745-6.319-14.332a752 752 0 0 1-7.154-2.44c-3.288-1.136-6.688-2.31-10.001-3.367-6.163-1.965-9.636-6.771-9.523-13.18.124-7.103.123-13.59-.005-19.833-.134-6.536 3.387-11.449 9.659-13.479 6.262-2.027 11.917-3.97 17.224-5.915a359 359 0 0 0 6.36-13.856c-2.061-4.599-4.436-9.577-7.541-15.818-2.843-5.714-1.837-11.523 2.758-15.938C46.52 46.429 50.95 41.993 55 37.711c3.443-3.639 7.163-4.403 9.677-4.403 2.871 0 5.152.971 6.618 1.701 4.749 2.363 10.278 5.081 15.908 7.647a338 338 0 0 0 13.775-5.543c2.271-5.772 4.281-11.491 5.816-15.945 2.024-5.87 6.725-9.237 12.897-9.237l.31.003c3.223.055 6.583.083 9.99.083 3.291 0 6.745-.026 10.269-.077l.243-.001c6.031 0 10.636 3.337 12.63 9.156 1.055 3.074 2.201 6.225 3.311 9.271.795 2.187 1.613 4.432 2.412 6.691 2.826.999 5.541 2.074 8.184 3.121 2.01.797 3.929 1.558 5.841 2.265 4.817-2.154 9.992-4.623 15.752-7.515 2.28-1.143 4.438-1.698 6.609-1.698 2.517 0 6.241.768 9.702 4.428 2.16 2.287 4.453 4.602 6.668 6.84 2.535 2.56 5.156 5.208 7.707 7.933 3.396 3.634 4.416 9.831 2.375 14.418-1.459 3.273-2.996 6.502-4.481 9.625-1.196 2.517-2.344 4.923-3.444 7.339.735 1.95 1.518 3.902 2.334 5.944 1.01 2.531 2.051 5.135 3.029 7.801 2.512.871 4.971 1.789 7.365 2.682 2.755 1.028 5.355 1.999 7.988 2.889 6.246 2.11 9.748 7.138 9.604 13.795-.169 7.626-.163 13.473.019 18.958.129 3.931-.979 10.978-9.853 14.025-5.563 1.92-10.539 3.747-15.132 5.561a369 369 0 0 0-5.18 13.81c1.066 2.322 2.188 4.671 3.274 6.955 1.501 3.149 3.054 6.406 4.526 9.703 1.855 4.139 1.73 10.467-2.109 14.534a455 455 0 0 1-6.449 6.688c-.813.83-1.635 1.658-2.453 2.486-2.225 2.248-4.323 4.373-6.383 6.566-1.941 2.07-4.404 3.368-7.123 3.753-.545.078-1.113.119-1.68.119-3.387 0-5.902-1.405-7.254-2.16-.12-.065-.238-.136-.355-.194-.918-.447-1.864-.879-2.813-1.312-.58-.265-1.161-.526-1.738-.798a616 616 0 0 1-7.888-3.721q-1.156-.557-2.313-1.125a245 245 0 0 1-14.189 6.129 609 609 0 0 1-2.025 5.85c-1.308 3.725-2.539 7.24-3.646 10.813-1.938 6.263-6.806 9.853-13.354 9.854l-.438-.005a485 485 0 0 0-9.788-.115c-3.08 0-5.842.045-8.444.14q-.415.011-.799.012"
+              fill="#d1d1d1"
+            />
+            <path
+              d="M195.82 210.063c-1.146.164-2.348-.763-3.484-1.314-1.563-.764-3.158-1.462-4.734-2.195a624 624 0 0 1-7.763-3.658 326 326 0 0 1-4.237-2.08c-1.968-.986-3.306-.686-5.166.203a235 235 0 0 1-16.541 7.145c-1.967.76-3.1 1.723-3.75 3.688-2.078 6.271-4.424 12.457-6.375 18.767-.709 2.295-1.832 2.849-4.035 2.804-6.262-.124-12.534-.195-18.792.026-2.833.102-4.19-.716-5.041-3.515-1.92-6.315-4.158-12.543-6.466-18.729-.411-1.104-1.624-2.188-2.735-2.709-5.756-2.697-11.562-5.3-17.441-7.72-1.314-.539-3.216-.726-4.457-.184-6.159 2.697-12.223 5.622-18.239 8.631-1.796.897-2.866.67-4.243-.763a578 578 0 0 0-14.539-14.55c-1.334-1.293-1.469-2.322-.666-3.959 2.758-5.613 5.207-11.383 8.085-16.932 1.313-2.533.983-4.408-.252-6.845-2.554-5.034-4.889-10.216-6.802-15.521-.84-2.329-2.021-3.426-4.199-4.137-6.281-2.056-12.488-4.334-18.782-6.346-1.899-.604-2.604-1.463-2.568-3.479.118-6.736.132-13.479-.006-20.213-.044-2.168.733-3.111 2.741-3.761 6.51-2.108 12.989-4.324 19.401-6.71 1.215-.451 2.441-1.693 3.024-2.883a367 367 0 0 0 7.95-17.336c.544-1.278.704-3.164.168-4.385-2.704-6.158-5.63-12.22-8.627-18.243-.883-1.774-.723-2.874.733-4.272 4.86-4.666 9.653-9.411 14.282-14.305 1.564-1.654 2.781-1.514 4.571-.623 6.022 2.997 12.071 5.948 18.21 8.695 1.161.521 2.918.394 4.163-.07a346 346 0 0 0 17.047-6.859c1.308-.569 2.758-1.778 3.269-3.045 2.421-6.014 4.61-12.124 6.724-18.254.65-1.885 1.604-2.528 3.586-2.495 6.855.117 13.716.105 20.57.006 1.871-.026 2.682.685 3.27 2.399 2.064 6.024 4.348 11.975 6.434 17.993.677 1.947 1.73 2.908 3.799 3.598 5.693 1.901 11.197 4.361 16.853 6.383 1.339.478 3.195.587 4.447.037 6.048-2.657 12.009-5.52 17.913-8.484 1.857-.932 3.043-.94 4.559.663 4.709 4.98 9.657 9.733 14.342 14.737.688.735.957 2.579.539 3.518-2.832 6.357-5.986 12.571-8.813 18.931-.513 1.147-.353 2.879.104 4.12 2.023 5.527 4.396 10.929 6.366 16.474.729 2.046 1.563 3.333 3.759 4.061 5.819 1.93 11.504 4.272 17.313 6.236 2.182.737 2.855 1.861 2.807 4.104-.145 6.498-.193 13.007.021 19.504.082 2.53-.924 3.489-3.106 4.239-5.909 2.039-11.786 4.188-17.583 6.523-1.191.479-2.386 1.806-2.879 3.023a378 378 0 0 0-6.693 17.852c-.396 1.146-.278 2.766.227 3.883 2.764 6.132 5.798 12.142 8.542 18.281.444.995.401 2.897-.252 3.592a438 438 0 0 1-6.313 6.543c-3.01 3.065-6.059 6.091-8.996 9.225-.412.424-.824.631-1.244.69m-23.737-83.383c.065-23.207-18.606-42.196-41.567-42.272-23.586-.079-42.52 18.377-42.604 41.532-.087 23.701 18.489 42.607 41.895 42.64 23.393.034 42.211-18.615 42.276-41.9"
+              fill="#464646"
+            />
+          </svg>
+        </button>
+      </header>
+
+      <section id="onboarding-card" class="hero-card page page-onboarding home-section onboarding-centered">
+        <h1 class="onboarding-hero-title">Get Started</h1>
+        <div class="onboarding-actions">
+          <button id="create-wallet" class="button primary button-block">Create Wallet</button>
+          <button id="show-imports" class="button subtle button-block">I already have a wallet</button>
+        </div>
+      </section>
+
+      <section id="password-setup-card" class="hero-card" hidden>
+        <div class="onboarding-copy">
+          <p class="section-kicker">Secure your wallet</p>
+          <h2 class="onboarding-title">Create a password</h2>
+          <p class="hero-copy">This password unlocks your wallet. Your recovery phrase is the only way to restore access if you forget it.</p>
+        </div>
+        <div class="disclosure-body settings-form">
+          <label class="field">
+            <span>Password</span>
+            <input id="setup-password-input" type="password" placeholder="At least 8 characters" minlength="8" autocomplete="new-password" />
+          </label>
+          <label class="field">
+            <span>Confirm password</span>
+            <input id="setup-password-confirm" type="password" placeholder="Confirm password" minlength="8" autocomplete="new-password" />
+          </label>
+          <div id="setup-password-error" class="lock-error muted" hidden></div>
+          <button id="setup-password-submit" class="button primary button-block" type="button">Continue</button>
+        </div>
+      </section>
+
+      <section id="wallet-card" class="hero-card page page-home home-section post-wallet-section">
+        <p id="popup-intro" class="hero-copy"></p>
+        <div id="wallet-state" class="wallet-state"></div>
+      </section>
+
+      <section class="section-card page page-send send-section">
+        <div class="section-header">
+          <div>
+            <p id="send-kicker" class="section-kicker">Send</p>
+            <p id="send-copy" class="section-copy"></p>
+          </div>
+        </div>
+        <div class="disclosure-body settings-form">
+          <label class="field">
+            <span id="send-asset-label">Asset</span>
+            <button id="send-asset-trigger" class="selector-button" type="button" aria-haspopup="dialog" aria-expanded="false">
+              <span id="send-asset-value">Select a token or NFT</span>
+              <svg class="selector-caret" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M4 6.5 8 10l4-3.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" />
+              </svg>
+            </button>
+          </label>
+          <div id="send-asset-balance" class="field-meta"></div>
+          <section id="send-asset-picker" class="asset-picker" hidden>
+            <div class="tab-strip asset-picker-tabs">
+              <button id="send-asset-tab-tokens" class="tab-button is-active" type="button">Tokens</button>
+              <button id="send-asset-tab-nfts" class="tab-button" type="button">NFTs</button>
+            </div>
+            <label class="field">
+              <span id="send-asset-search-label">Search</span>
+              <input id="send-asset-search" type="text" placeholder="Search assets" />
+            </label>
+            <div id="send-asset-list" class="list-stack asset-picker-list"></div>
+          </section>
+          <label class="field">
+            <span id="send-to-label">To</span>
+            <input id="send-to-input" type="text" />
+          </label>
+          <label class="field">
+            <span id="send-amount-label">Amount</span>
+            <input id="send-amount-input" type="text" inputmode="decimal" />
+          </label>
+          <button id="send-submit" class="button primary button-block" type="button">Send</button>
+          <div id="send-status" class="muted"></div>
+        </div>
+      </section>
+
+      <section class="section-card page page-receive receive-section">
+        <div class="section-header">
+          <div>
+            <p id="receive-copy" class="section-copy"></p>
+          </div>
+        </div>
+        <div class="receive-row">
+          <div id="receive-address" class="receive-address mono"></div>
+          <div class="section-actions receive-actions">
+            <button id="copy-receive-address" class="mini-icon-button" type="button" aria-label="Copy address" title="Copy address">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 9h9v11H9z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M6 15H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <a id="open-receive-diliscan" class="mini-icon-button" href="#" target="_blank" rel="noreferrer" aria-label="Open in DiliScan" title="Open in DiliScan">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 5h5v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 14 19 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card page page-shielded shielded-section">
+        <div class="section-header">
+          <div>
+            <p id="shielded-kicker" class="section-kicker">Shielded</p>
+            <p id="shielded-copy" class="section-copy"></p>
+          </div>
+        </div>
+        <div class="wallet-meta shielded-summary">
+          <div class="wallet-meta-row">
+            <span id="shielded-balance-label" class="wallet-label">Shielded Balance</span>
+            <span id="shielded-balance-value" class="wallet-meta-value">0</span>
+          </div>
+          <div class="wallet-meta-row">
+            <span id="shielded-notes-label" class="wallet-label">Shielded Notes</span>
+            <span id="shielded-notes-value" class="wallet-meta-value">0</span>
+          </div>
+        </div>
+
+        <div class="shielded-grid">
+          <section class="shielded-card">
+            <p id="shielded-deposit-title" class="section-kicker">Deposit</p>
+            <div class="disclosure-body settings-form">
+              <label class="field">
+                <span id="shielded-deposit-amount-label">Amount</span>
+                <input id="shielded-deposit-amount" type="text" inputmode="numeric" />
+              </label>
+              <button id="shielded-deposit-submit" class="button primary button-block" type="button">Deposit</button>
+              <div id="shielded-deposit-status" class="muted"></div>
+            </div>
+          </section>
+
+          <section class="shielded-card">
+            <p id="shielded-withdraw-title" class="section-kicker">Withdraw</p>
+            <div class="disclosure-body settings-form">
+              <label class="field">
+                <span id="shielded-note-label">Note</span>
+                <select id="shielded-note-select"></select>
+              </label>
+              <label class="field">
+                <span id="shielded-recipient-label">Recipient</span>
+                <input id="shielded-recipient-input" type="text" />
+              </label>
+              <label class="field">
+                <span id="shielded-withdraw-amount-label">Amount</span>
+                <input id="shielded-withdraw-amount" type="text" inputmode="numeric" />
+              </label>
+              <button id="shielded-withdraw-submit" class="button primary button-block" type="button">Withdraw</button>
+              <div id="shielded-withdraw-status" class="muted"></div>
+            </div>
+          </section>
+
+          <section class="shielded-card">
+            <p id="shielded-proof-title" class="section-kicker">Compliance Proof</p>
+            <div class="disclosure-body settings-form">
+              <label class="field">
+                <span id="shielded-proof-min-label">Minimum</span>
+                <input id="shielded-proof-min" type="text" inputmode="numeric" />
+              </label>
+              <label class="field">
+                <span id="shielded-proof-max-label">Maximum</span>
+                <input id="shielded-proof-max" type="text" inputmode="numeric" />
+              </label>
+              <button id="shielded-proof-submit" class="button subtle button-block" type="button">Generate Proof</button>
+              <pre id="shielded-proof-output" class="shielded-proof-output muted"></pre>
+            </div>
+          </section>
+        </div>
+
+        <section class="shielded-card">
+          <p id="shielded-notes-title" class="section-kicker">Notes</p>
+          <div id="shielded-notes-list" class="list-stack"></div>
+        </section>
+      </section>
+
+      <section id="recovery-panel" class="section-card page page-recovery recovery-section">
+        <div class="section-header">
+          <div>
+            <p id="backup-phrase-title" class="section-kicker">Back up your wallet</p>
+            <p id="recovery-warning" class="section-copy"></p>
+          </div>
+        </div>
+        <div id="recovery-mnemonic" class="mnemonic-grid"></div>
+        <div class="section-actions">
+          <button id="export-wallet-file" class="button primary">Export Wallet File</button>
+          <button id="mark-backed-up" class="button subtle">I Wrote It Down</button>
+        </div>
+      </section>
+
+      <section id="approval-spotlight" class="section-card page page-home home-section post-wallet-section">
+        <div id="approval-spotlight-content"></div>
+      </section>
+
+      <section id="import-mnemonic-section" class="section-card page page-import import-section">
+        <div class="import-panel-body">
+          <label class="field">
+            <span id="import-mnemonic-label">Mnemonic</span>
+            <textarea id="import-mnemonic-input" rows="4" placeholder="Enter your 24-word recovery phrase"></textarea>
+            <small class="field-help">Words separated by spaces.</small>
+          </label>
+          <button id="import-mnemonic-button" class="button primary button-block">Import From Mnemonic</button>
+        </div>
+      </section>
+
+      <section class="section-card page page-settings settings-section">
+        <div class="section-header">
+          <div>
+            <p id="settings-kicker" class="section-kicker">Settings</p>
+            <p id="settings-copy" class="section-copy"></p>
+          </div>
+        </div>
+
+        <div class="disclosure-body settings-form">
+          <button id="open-networks" class="button subtle button-block" type="button">Configure Networks</button>
+          <label class="field">
+            <span id="language-label">Language</span>
+            <select id="locale">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="pt">Portuguese</option>
+            </select>
+          </label>
+          <button id="save-settings" class="button primary button-block" type="button">Save Settings</button>
+        </div>
+      </section>
+
+      <section class="section-card page page-networks networks-section">
+        <div class="section-header">
+          <div>
+            <p id="networks-kicker" class="section-kicker">Networks</p>
+            <p id="networks-copy" class="section-copy"></p>
+          </div>
+        </div>
+
+        <form id="networks-form" class="disclosure-body settings-form">
+          <label class="field">
+            <span id="network-registry-url-label">Network Registry URL</span>
+            <div class="inline-field">
+              <input id="network-registry-url" type="text" placeholder="Registry URL" />
+              <button id="refresh-registry" class="icon-button inline-icon-button" type="button" aria-label="Refresh registry" title="Refresh registry">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path fill="#444" d="M2.6 5.6C3.5 3.5 5.6 2 8 2c3 0 5.4 2.2 5.9 5h2c-.5-3.9-3.8-7-7.9-7-3 0-5.6 1.6-6.9 4.1L0 3v4h4zM16 9h-4.1l1.5 1.4c-.9 2.1-3 3.6-5.5 3.6C5 14 2.5 11.8 2 9H0c.5 3.9 3.9 7 7.9 7 3 0 5.6-1.7 7-4.1L16 13z"/>
+                </svg>
+              </button>
+            </div>
+          </label>
+          <div id="registry-status" class="muted"></div>
+          <label class="field">
+            <span id="network-label">Network</span>
+            <select id="network-id" class="network-select"></select>
+          </label>
+          <label class="field">
+            <span id="rpc-url-label">RPC URL</span>
+            <input id="rpc-url" type="text" placeholder="RPC endpoint" />
+          </label>
+          <label class="field">
+            <span id="chain-id-label">Chain ID</span>
+            <input id="chain-id" type="text" placeholder="Chain ID" />
+          </label>
+          <label class="field">
+            <span id="bootstrap-peers-label">Bootstrap Peers</span>
+            <textarea id="bootstrap-peers" rows="5" readonly></textarea>
+          </label>
+          <button id="save-networks" class="button primary button-block" type="submit">Save Networks</button>
+        </form>
+      </section>
+
+      <section class="section-card page page-accounts accounts-section">
+        <div class="section-header">
+          <div>
+            <p id="accounts-kicker" class="section-kicker">Accounts</p>
+          </div>
+        </div>
+        <p id="accounts-copy" class="section-copy accounts-copy"></p>
+        <div class="section-actions">
+          <button id="create-account" class="icon-button icon-button-accent" type="button" aria-label="Create account" title="Create account">+</button>
+        </div>
+        <div id="accounts-list" class="list-stack"></div>
+      </section>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

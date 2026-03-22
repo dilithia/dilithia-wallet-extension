@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <rect x="4" y="18" width="112" height="90" rx="6" fill="#e67300" stroke="#e67300" stroke-width="4" stroke-linejoin="round"/>
+  <g transform="translate(4 18)skewY(-8)">
+    <rect width="106" height="90" rx="6" fill="#ff8c00" stroke="#ff8c00" stroke-width="4" stroke-linejoin="round"/>
+    <path transform="translate(-5)" d="M20 8h15v15H20zm20 0h15v15H40zm20 0h15v15H60zM20 28h15v15H20zm60 0h15v15H80zM20 48h15v15H20zm60 0h15v15H80zM20 68h15v15H20zm20 0h15v15H40zm20 0h15v15H60z" style="fill:#f3e7d3"/>
+  </g>
+</svg>
+

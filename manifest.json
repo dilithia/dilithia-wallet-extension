@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Dilithia Wallet",
+  "description": "Non-custodial Dilithia wallet with post-quantum signing (ML-DSA-65), shielded pool privacy, and an injected window.dilithia provider for dapps.",
+  "version": "0.5.0",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "src/assets/icon-16.png",
+    "32": "src/assets/icon-32.png",
+    "48": "src/assets/icon-48.png",
+    "128": "src/assets/icon-128.png"
+  },
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts; script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "action": {
+    "default_title": "Dilithia Wallet",
+    "default_popup": "dist/popup/src/popup/index.html",
+    "default_icon": {
+      "16": "src/assets/icon-16.png",
+      "32": "src/assets/icon-32.png",
+      "48": "src/assets/icon-48.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content-script.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/inpage.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

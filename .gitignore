@@ -1,0 +1,50 @@
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+dist/
+coverage/
+*.zip
+
+# Rust / WASM build artifacts
+target/
+target2/
+target-wasm/
+.cargo-target-wasm/
+crypto-wasm/target/
+crypto-wasm/target2/
+crypto-wasm/target-wasm/
+crypto-wasm/.wasm-pack-target/
+crypto-wasm/.wasm-release-target/
+.cargo-target-wasm/
+
+# WASM compiled output (rebuild with scripts/build-wasm.sh)
+crypto-wasm/pkg/
+
+# Temporary files
+tmp/
+*.tmp
+*.swp
+*.swo
+
+# Local env / editor noise
+.env
+.env.*
+.idea/
+.vscode/
+
+# Local vendored copies (use published npm packages instead)
+browser-sdk/
+
+# Chrome extension packing
+*.pem
+*.crx
+
+# Secrets / keys
+*.key
+*.secret
